@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="template :: head">
+    </head>
+    <body>
+        <header th:replace="template :: header">
+        </header>
+        <div class="main mx-4">
+            <div class="d-flex align-items-center justify-content-between py-4 opciones">
+                <a th:href="@{/cita}" class="btn text-white me-auto" style="background-color: var(--celeste-oscuro);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                    <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                    </svg>
+                </a>
+                <a id="btnFiltrar" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"
+                   class="disa btn fw-bold d-flex align-items-center justify-content-center w-25 me-3" style="background-color: var(--celeste-claro); color: var(--texto-desactivado); font-size: 1.2rem">Filtrar</a>
+            </div>
+            <div>
+                <div class="p-4 d-flex flex-column align-items-center bg-white fs-5" style="border: .25rem solid var(--celeste-oscuro); border-radius: 20px;">
+                    <div>
+                        <div class="rounded-pill text-white text-center fs-5 fw-bold px-5 py-2" style="background-color: var(--celeste-oscuro); font-size: 1.2rem;">
+                            INFORMACIÓN DE LA CITA
+                        </div>
+                    </div>
+                    <div class="">
+                        <table class="table caption-top my-3">
+                            <caption class="ms-2">Datos del paciente:</caption>
+                            <tr>
+                                <th scope="row">Nombres:</th>
+                                <td th:text="${Cita.idpaciente.idpersona.nombres}"></td>   
+                            </tr>
+                            <tr>
+                                <th scope="row">Apellidos:</th>
+                                <td th:text="${Cita.idpaciente.idpersona.apellidos}"></td>   
+                            </tr>
+                            <tr>
+                                <th scope="row">DNI:</th>
+                                <td th:text="${Cita.idpaciente.idpersona.dni}"></td>   
+                            </tr>
+                            <tr>
+                                <th scope="row">Celular:</th>
+                                <td th:text="${Cita.idpaciente.idpersona.celular}"></td>   
+                            </tr>
+                        </table>
+                        <table class="table caption-top my-3">
+                            <caption class="ms-2">Datos de la cita:</caption>
+                            <tr>
+                                <th scope="row">Fecha:</th>
+                                <td th:text="${#dates.format(Cita.fecha, 'dd/MM/yyyy')}"></td>   
+                            </tr>
+                            <tr>
+                                <th scope="row">Hora:</th>
+                                <td th:text="${#dates.format(Cita.hora, 'HH:mm')}"></td>   
+                            </tr>
+                            <tr>
+                                <th scope="row">Comentario:</th>
+                                <td th:text="${Cita.comentario}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Doctor:</th>
+                                <td th:text="${Cita.iddoctor.idpersona.nombres} + ' ' +
+                                    ${Cita.iddoctor.idpersona.apellidos}"></td>   
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="template :: footer">
+        </footer>
+    </body>
+</html>

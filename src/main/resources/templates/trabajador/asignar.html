@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="template :: head">
+    </head>
+    <body>
+        <header th:replace="template :: header">
+        </header>
+        <div class="main mx-4">
+            <div class="d-flex justify-content-between py-4 opciones">
+                <a th:href="@{/trabajador}" class="btn text-white me-auto" style="background-color: var(--celeste-oscuro);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                    <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                    </svg>
+                </a>
+                <a class="btn fw-bold d-flex align-items-center justify-content-center w-25 me-3" style="background-color: var(--celeste-claro); font-size: 1.2rem; color: var(--texto-desactivado)">Nuevo</a>
+                <a class="btn text-white fw-bold d-flex align-items-center justify-content-center w-25 me-2" style="background-color: var(--celeste-oscuro); font-size: 1.2rem">Asignar Usuario</a>
+                <a class="btn fw-bold d-flex align-items-center justify-content-center w-25 me-2" style="background-color: var(--celeste-claro); font-size: 1.2rem; color: var(--texto-desactivado)" id="editarTrabajador">Editar Trabajador</a>
+            </div>
+
+            <form action="/trabajador/asignado" method="POST" th:object="${Usuario}"
+                  th:with="clave=${#strings.substring(Persona.nombres,0,1)}
+                  +${#strings.substring(Persona.apellidos,0,1)}
+                  +${#strings.randomAlphanumeric(4)}" class="p-4 bg-white d-flex justify-content-center" style="border: 5px solid var(--celeste-oscuro); border-radius: 30px;">
+                <div style="min-width: 500px">
+                    <input th:value="${Persona.id_persona}" type="hidden" name="id_persona">
+                    <div class="row">
+                        <div class="input-group form-floating mb-4 col">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-person-fill"></i></span>
+                            <input th:value="${Persona.nombres}" type="text" name="nombres" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiNombres" placeholder="Nombres" disabled>
+                            <label for="fiNombres" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Nombres</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group form-floating mb-4 col">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-person-fill"></i></span>
+                            <input th:value="${Persona.apellidos}" type="text" name="apellidos" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiApellidos" placeholder="Apellidos" disabled>
+                            <label for="fiApellidos" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Apellidos</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group form-floating mb-4 col">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-person-circle"></i></span>
+                            <input th:classappend="${#fields.hasErrors('username')}? 'is-invalid' : 'is-valid'"
+                                th:value="${clave}" type="text" name="username" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiUsername" placeholder="Usuario">
+                            <label for="fiUsername" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Usuario</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group form-floating mb-4 col">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-lock-fill"></i></span>
+                            <input th:classappend="${!coinciden}? 'is-invalid' : 'is-valid'"
+                                   th:value="${clave}" type="password" name="password" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiPassword" placeholder="Contraseña">
+                            <label for="fiPassword" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Contraseña</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group form-floating mb-4 col">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-lock-fill"></i></span>
+                            <input th:classappend="${!coinciden}? 'is-invalid' : 'is-valid'"
+                                   th:value="${clave}" type="password" name="passwordcheck" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiPasswordc" placeholder="Confirmar Contraseña">
+                            <label for="fiPasswordc" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Confirmar Contraseña</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group form-floating mb-4 col">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-person-lines-fill"></i></span>
+                            <select th:classappend="${#fields.hasErrors('idrol')}? 'is-invalid' : 'is-valid'"
+                                class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiCargo" placeholder="Cargo" name="idrol" aria-label="Cargo">
+                                <option class="fst-italic" value="">-</option>
+                                <option th:each="rol : ${Roles}" th:value="${rol.id_rol}" th:text="${#strings.substring(rol.rol,5)}">
+                                </option>
+                            </select>
+                            <label for="fiCargo" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Cargo</label>
+                        </div>
+                    </div>
+                    <div class='d-flex justify-content-end opciones2'>
+                        <button class="btn text-white me-2 fs-5" style="background-color: var(--gris)" type='reset'>Limpiar</button>
+                        <input class="btn text-white fs-5" style="background-color: var(--morado)" type="submit" value="Confirmar">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <footer th:replace="template :: footer">
+        </footer>
+    </body>
+</html>

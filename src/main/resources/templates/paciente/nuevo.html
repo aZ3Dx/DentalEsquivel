@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="template :: head">
+    </head>
+    <body>
+        <header th:replace="template :: header">
+        </header>
+        <div class="main mx-4">
+            <div class="d-flex justify-content-between py-4 opciones">
+                <a th:href="@{/paciente}" class="btn text-white me-auto" style="background-color: var(--celeste-oscuro);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                    <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                    </svg>
+                </a>
+                <a class="btn text-white fw-bold d-flex align-items-center justify-content-center w-25 me-3" style="background-color: var(--celeste-oscuro); font-size: 1.2rem" id="mostrarNuevo">Nuevo</a>
+                <a class="btn fw-bold d-flex align-items-center justify-content-center w-25 me-2" style="background-color: var(--celeste-claro); color:var(--texto-desactivado); font-size: 1.2rem" id="verPaciente">Ver Paciente</a>
+                <a class="btn fw-bold d-flex align-items-center justify-content-center w-25 me-2" style="background-color: var(--celeste-claro); color:var(--texto-desactivado); font-size: 1.2rem" id="editarPaciente">Editar Paciente</a>
+            </div>
+            <div id="Nuevo">
+                <form th:action="@{/paciente/nuevo/guardar}" method="post" class="p-4 bg-white d-flex justify-content-center" style="border: 5px solid var(--celeste-oscuro); border-radius: 30px;">
+                    <div class="" style="max-width: 1000px" th:with="clave=${#strings.randomAlphanumeric(6)}">
+                        <input type="hidden" th:value="${clave}" name="claveBox">
+                        <div th:object="${Persona}">
+                            <div class="row">
+                                <div class="input-group form-floating mb-4 col position-relative">
+                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-person-fill"></i></span>
+                                    <input th:classappend="${#fields.hasErrors('nombres')}? 'is-invalid' : 'is-valid'"
+                                           th:field="*{nombres}" type="text" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiNombres" placeholder="Nombres" name="nombres">
+                                    <label for="fiNombres" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Nombres</label>  
+                                </div>
+                                <div class="input-group form-floating mb-4 col">
+                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-person-fill"></i></span>
+                                    <input th:classappend="${#fields.hasErrors('apellidos')}? 'is-invalid' : 'is-valid'"
+                                           th:field="*{apellidos}" type="text" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiApellidos" placeholder="Apellidos" name="apellidos">
+                                    <label for="fiApellidos" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Apellidos</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-group form-floating mb-4 col aaa" style="max-width: 30%">
+                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-geo-alt-fill"></i></span>
+                                    <select th:classappend="${#fields.hasErrors('idciudad')}? 'is-invalid' : 'is-valid'"
+                                            th:field="*{idciudad}" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiCiudad" placeholder="Ciudad" name="ciudad" aria-label="Ciudad">
+                                        <option class="fst-italic" value="">-</option>
+                                        <option th:each="ciu : ${Ciudades}" th:value="${ciu.id_ciudad}" th:text="${ciu.ciudad}">
+                                        </option>
+                                    </select>
+                                    <label for="fiCiudad" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Distrito</label>
+                                </div>
+                                <div class="input-group form-floating mb-4 col">
+                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-geo-alt-fill"></i></span>
+                                    <input th:classappend="${#fields.hasErrors('direccion')}? 'is-invalid' : 'is-valid'"
+                                           th:field="*{direccion}" type="text" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiDirección" placeholder="Dirección" name="direccion">
+                                    <label for="fiDirección" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Dirección</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-group form-floating mb-4 col">
+                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-gender-ambiguous"></i></span>
+                                    <select th:classappend="${#fields.hasErrors('genero')}? 'is-invalid' : 'is-valid'"
+                                            th:field="*{genero}" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiGenero" placeholder="Género" name="genero" aria-label="Género">
+                                        <option class="fst-italic" value="">-</option>
+                                        <option value="M">Mujer</option>
+                                        <option value="H">Hombre</option>
+                                    </select>
+                                    <label for="fiGenero" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Género</label>
+                                </div>
+                                <div class="input-group form-floating mb-4 col">
+                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-phone-fill"></i></span>
+                                    <input th:classappend="${#fields.hasErrors('celular')}? 'is-invalid' : 'is-valid'"
+                                           th:field="*{celular}" type="number" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiCelular" placeholder="Celular" name="celular">
+                                    <label for="fiCelular" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Celular</label>
+                                </div>
+                                <div class="input-group form-floating mb-4 col">
+                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-calendar"></i></span>
+                                    <input th:classappend="${#fields.hasErrors('fechanac')}? 'is-invalid' : 'is-valid'"
+                                           th:field="*{fechanac}" type="text" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="idFechaNac" placeholder="fechanac" name="fechanac">
+                                    <label for="idFechaNac" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Fecha Nac.</label>
+                                </div>
+                                <div class="input-group form-floating mb-4 col">
+                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-person-bounding-box"></i></span>
+                                    <input th:classappend="${#fields.hasErrors('dni')}? 'is-invalid' : 'is-valid'"
+                                           th:field="*{dni}" type="number" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiDni" placeholder="DNI" name="dni">
+                                    <label for="fiDni" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">DNI</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:object="${Paciente}">
+                            <div class="row">
+                                <div class="input-group form-floating mb-4 col">
+                                    <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-geo-alt-fill"></i></span>
+                                    <input th:classappend="${#fields.hasErrors('alergias')}? 'is-invalid' : 'is-valid'"
+                                           th:field="*{alergias}" type="text" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiAlergias" placeholder="Alergias" name="alergias">
+                                    <label for="fiAlergias" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Alergias</label>
+                                </div>
+                            </div>
+                            <div class='d-flex justify-content-end opciones2'>
+                                <a th:href="@{/paciente/nuevo}" class="btn text-white me-2 fs-5" style="background-color: var(--gris)">Limpiar</a>
+                                <input class="btn text-white fs-5" style="background-color: var(--morado)" type="submit" value="Confirmar">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <footer th:replace="template :: footer">
+        </footer>
+        <script src="http://localhost:8080/js/datejs.js"></script>
+        <script>
+            $("input[name*='fechanac']").flatpickr({
+                monthSelectorType: "dropdown",
+                allowInput: true,
+                dateFormat: "d/m/Y"
+            });
+        </script>
+    </body>
+</html>

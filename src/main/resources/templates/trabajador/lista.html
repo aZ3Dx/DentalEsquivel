@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="template :: head">
+    </head>
+    <body>
+        <header th:replace="template :: header">
+        </header>
+        <div class="main mx-4">
+            <div class="d-flex justify-content-between py-4 opciones">
+                <a id="mostrarLista" class="btn text-white me-auto" style="background-color: var(--celeste-oscuro);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                    <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                    </svg>
+                </a>
+                <a th:href="@{/trabajador/nuevo}" class="btn text-white fw-bold d-flex align-items-center justify-content-center w-25 me-3" style="background-color: var(--celeste-oscuro); font-size: 1.2rem" id="mostrarNuevo">Nuevo</a>
+                <a class="btn fw-bold d-flex align-items-center justify-content-center w-25 me-2" style="background-color: var(--celeste-claro); color:var(--texto-desactivado); font-size: 1.2rem" id="asignarUsuario">Asignar Usuario</a>
+                <a class="btn fw-bold d-flex align-items-center justify-content-center w-25 me-2" style="background-color: var(--celeste-claro); color:var(--texto-desactivado); font-size: 1.2rem" id="editarTrabajador">Editar Trabajador</a>
+            </div>
+            <div id="Lista" >
+                <table id="table_id" class="table table-bordered align-middle fs-5">
+                    <thead>
+                    <tr class="table-light">
+                        <th>ID</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Usuario</th>
+                        <th>Cargo</th>
+                        <th class="text-center">Marcar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="per : ${Personas}">
+                        <td th:text="${per.id_persona}"></td>
+                        <td th:text="${per.nombres}"></td>
+                        <td th:text="${per.apellidos}"></td>
+                        <td>
+                            <span th:classappend="${per.idusuario}? '' : 'text-danger'"
+                                th:text="${per.idusuario != null} ? ${per.idusuario.username} : '-'">
+                            </span>
+                        </td>
+                        <td>
+                            <span th:classappend="${per.idusuario}? '' : 'text-danger'"
+                                th:text="${per.idusuario != null} ? ${#strings.substring(per.idusuario.idrol.rol,5)} : 'Asignar'">
+                            </span>
+                            <span th:if="${per.idusuario != null}">
+                                <span th:if="${!per.idusuario.activo}" class="text-danger fst-italic">(Inactivo)</span>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <input id="check" class="form-check-input" type="checkbox">
+                                <a th:href="@{/trabajador/asignar(id=${per.id_persona})}"></a>
+                                <a th:href="@{/trabajador/editar(id=${per.id_persona})}"></a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <footer th:replace="template :: footer">
+        </footer>
+        <script>
+            $('input[type="checkbox"]').on('change', function() {
+                $('input[type="checkbox"]').not(this).prop('checked', false);
+                if($(this).is(':checked')){
+                    $("#asignarUsuario").css({
+                        "background-color":"var(--celeste-oscuro)",
+                        "color":"white"
+                    });
+                    $("#editarTrabajador").css({
+                        "background-color":"var(--celeste-oscuro)",
+                        "color":"white"
+                    });
+                } else {
+                    $("#asignarUsuario").css({
+                        "background-color":"var(--celeste-claro)",
+                        "color":"var(--texto-desactivado)"
+                    });
+                    $("#editarTrabajador").css({
+                        "background-color":"var(--celeste-claro)",
+                        "color":"var(--texto-desactivado)"
+                    });
+                }
+            });
+            $("#asignarUsuario").click(function (){
+                $("input[type='checkbox']").each(function() {
+                    if($(this).prop("checked")){
+                        $(this).next()[0].click();
+                    }
+                });
+            });
+            $("#editarTrabajador").click(function (){
+                $("input[type='checkbox']").each(function() {
+                    if($(this).prop("checked")){
+                        $(this).next().next()[0].click();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

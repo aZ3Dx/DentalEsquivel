@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="template :: head">
+    </head>
+    <body>
+        <header th:replace="template :: header">
+        </header>
+        <div class="main mx-4">
+            <form th:action="@{/cita/nueva/guardar}" method="post" th:object="${Cita}" class="p-4 bg-white d-flex justify-content-center" style="border: 5px solid var(--celeste-oscuro); border-radius: 30px;">
+                <div class="" style="max-width: 1000px">
+                    <div class="row">
+                        <div class="input-group form-floating mb-4 col position-relative">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-person-fill"></i></span>
+                            <input type="hidden" th:field="*{idpaciente}">
+                            <input disabled th:value="*{idpaciente.idpersona.nombres} + ' ' + *{idpaciente.idpersona.apellidos}"
+                                type="text" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiPaciente" placeholder="Paciente">
+                            <label for="fiPaciente" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Paciente</label>  
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group form-floating mb-4 col position-relative">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-person-fill"></i></span>
+                            <input disabled th:value="*{idpaciente.idpersona.dni}"
+                                   type="text" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiDNI" placeholder="DNI">
+                            <label for="fiDNI" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">DNI</label>
+                        </div>
+                        <input type="hidden" th:value="${letraDia}" id="letraDia" name="letraDia">
+                        <div class="input-group form-floating mb-4 col">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-calendar"></i></span>
+                            <input th:classappend="${#fields.hasErrors('fecha')}? 'is-invalid' : 'is-valid'"
+                                   th:field="*{fecha}" type="text" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="idFecha" placeholder="Fecha">
+                            <label for="idFecha" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Fecha</label>
+                        </div>
+                        <div class="input-group form-floating mb-4 col">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-calendar"></i></span>
+                            <select th:classappend="${#fields.hasErrors('hora')}? 'is-invalid' : 'is-valid'"
+                                    th:field="*{hora}" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiHora" placeholder="Hora" name="hora" aria-label="Hora">
+                                <option class="fst-italic" value="">-</option>
+                                <option th:each="hor : ${Horas}" th:value="${hor.idturno.hora}" th:text="${hor.idturno.hora}"></option>
+                            </select>
+                            <label for="fiHora" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Hora</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group form-floating mb-4 col">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-calendar"></i></span>
+                            <input th:classappend="${#fields.hasErrors('comentario')}? 'is-invalid' : 'is-valid'"
+                                   th:field="*{comentario}" type="text" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiComentario" placeholder="Comentario" name="comentario">
+                            <label for="fiComentario" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Comentario</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="hidden" th:field="*{iddoctor}" id="iddoctor">
+                        <div class="input-group form-floating mb-4 col">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-calendar"></i></span>
+                            <input th:classappend="${#fields.hasErrors('iddoctor')}? 'is-invalid' : 'is-valid'"
+                                   disabled th:value="*{iddoctor}? *{iddoctor.idpersona.nombres} + ' ' + *{iddoctor.idpersona.apellidos}"
+                                   type="text" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiDoctor" placeholder="Doctor" name="doctor">
+                            <label for="fiDoctor" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Doctor</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group form-floating mb-4 col">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-calendar"></i></span>
+                            <input 
+                                   disabled
+                                   type="text" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiRecepcionista" placeholder="Recepcionista" name="recepcionista">
+                            <label for="fiRecepcionista" style="z-index: 3; padding-left: .5rem; left: 3.76rem; transition: 0.4s; font-size: 1rem;">Recepcionista</label>
+                        </div>
+                    </div>
+                    <div class='d-flex justify-content-end opciones2'>
+                        <a class="btn text-white me-2 fs-5" style="background-color: var(--gris)">Limpiar</a>
+                        <input class="btn text-white fs-5" style="background-color: var(--morado)" type="submit" value="Confirmar">
+                    </div>
+                    
+                </div>
+            </form>
+        </div>
+        <footer th:replace="template :: footer">
+        </footer>
+        <script src="http://localhost:8080/js/datejs.js"></script>
+        <script>
+            $("input[name*='fecha']").flatpickr({
+                disable: [function(date) {return (date.getDay() === 0 );}],
+                monthSelectorType: "dropdown",
+                allowInput: true,       
+                dateFormat: "d/m/Y",
+                minDate: "today"
+            });
+            $("input[name*='hora']").flatpickr({
+                enableTime: true,
+                noCalendar: true,
+                time_24hr: true
+            });
+        </script>
+        <script th:inline="javascript">
+            /* Variable Javascript que guarda el contextPath para formar la URL a la cual haremos la peticion*/
+            var contextPath = /*[[@{http://localhost:8080/cita/nueva/obtenerHoras}]]*/
+            console.log(contextPath);
+            var contextPath2 = /*[[@{http://localhost:8080/cita/nueva/obtenerDoctor}]]*/
+            console.log(contextPath2);
+
+            $('#idFecha').change(function() {
+                $("#iddoctor").val('');
+                $("#fiDoctor").val('');
+                var arrDia = ['A','B','C','D','E','F'];
+                var fecha = document.getElementById("idFecha").value;
+                var d = fecha.split("/");
+                var date = new Date(d[2] + '/' + d[1] + '/' + d[0]);
+                var day = arrDia[date.getDay()-1];
+                console.log(day);
+                console.log(date);
+                console.log(d);
+                $("#letraDia").val(day);
+                
+                $.getJSON(contextPath,{
+                    dia : day
+                },function(data) {
+                    var html = "<option value=''>-</option>";
+                    var len = data.length;
+                    for(var i = 0; i < len; i++) {
+                        html += "<option value='" + data[i].idturno.hora + "'>"
+                        + data[i].idturno.hora;
+                    }
+                    html += "</option>";
+                    console.log(html);
+                    $("#fiHora").html(html);
+                });
+            });
+            $("#fiHora").change(function (){
+                var arrDia = ['A','B','C','D','E','F'];
+                var fecha = document.getElementById("idFecha").value;
+                var d = fecha.split("/");
+                var date = new Date(d[2] + '/' + d[1] + '/' + d[0]);
+                var day = arrDia[date.getDay()-1];
+                var hora = $(this).val();
+                $.getJSON(contextPath2,{
+                    dia : day,
+                    hora : hora
+                },function(data) {
+                    $("#iddoctor").val(data.iddoctor.id_doctor);
+                    $("#fiDoctor").val(data.iddoctor.idpersona.nombres +
+                            " "+
+                            data.iddoctor.idpersona.apellidos);
+                });
+            });
+        </script>
+    </body>
+</html>

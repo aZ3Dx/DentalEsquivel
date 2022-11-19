@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="template :: head">
+    </head>
+    <body>
+        <header th:replace="template :: header">
+        </header>
+        <div class="main mx-4">
+            <div class="d-flex justify-content-between py-4 opciones">
+                <a id="mostrarLista" class="btn text-white me-auto" style="background-color: var(--celeste-oscuro);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                    <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                    </svg>
+                </a>
+                <a th:href="@{/paciente/nuevo}" class="btn text-white fw-bold d-flex align-items-center justify-content-center me-3" style="background-color: var(--celeste-oscuro); font-size: 1.2rem; width: 18%;" id="mostrarNuevo">Nuevo</a>
+                <a class="btn fw-bold d-flex align-items-center justify-content-center me-2" style="background-color: var(--celeste-claro); color:var(--texto-desactivado); font-size: 1.2rem; width: 18%;" id="verPaciente">Ver Paciente</a>
+                <a class="btn fw-bold d-flex align-items-center justify-content-center me-2" style="background-color: var(--celeste-claro); color:var(--texto-desactivado); font-size: 1.2rem; width: 18%;" id="editarPaciente">Editar Paciente</a>
+                <a class="btn fw-bold d-flex align-items-center justify-content-center me-2" style="background-color: var(--celeste-claro); color:var(--texto-desactivado); font-size: 1.2rem; width: 18%;" id="nuevaCita">Nueva Cita</a>
+            </div>
+            <div id="Lista">
+                <table id="table_id" class="table table-bordered align-middle fs-5">
+                    <thead>
+                    <tr class="table-light">
+                        <th>ID</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>DNI</th>
+                        <th>Alergias</th>
+                        <th class="text-center">Marcar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="pac : ${Pacientes}">
+                        <td th:text="${pac.idpersona.id_persona}"></td>
+                        <td th:text="${pac.idpersona.nombres}"></td>
+                        <td th:text="${pac.idpersona.apellidos}"></td>
+                        <td th:text="${pac.idpersona.dni}"></td>
+                        <td th:text="${#strings.isEmpty(pac.alergias)}? 'No' : 'Si'"></td>
+                        <td>
+                            <div class="text-center">
+                                <input id="check" class="form-check-input" type="checkbox">
+                                <button hidden type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#PAC'+${pac.idpersona.dni}">
+                                </button>
+                                <a th:href="@{/paciente/editar(id=${pac.id_paciente})}"></a>
+                                <a th:href="@{/cita/nueva(id=${pac.id_paciente})}"></a>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" th:attr="id='PAC'+${pac.idpersona.dni}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content p-4" style="border: .25rem solid var(--celeste-oscuro); border-radius: 20px;">
+                                        <div class="modal-title" id="exampleModalLabel">
+                                            <div class="rounded-pill text-white text-center py-3 mx-5 fw-bold" style="background-color: var(--celeste-oscuro); font-size: 1.2rem;">
+                                                INFORMACIÓN DEL PACIENTE 
+                                            </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table">
+                                                <tr>
+                                                    <th scope="row">Nombres:</th>
+                                                    <td th:text="${pac.idpersona.nombres}"></td>   
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Apellidos:</th>
+                                                    <td th:text="${pac.idpersona.apellidos}"></td>   
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">DNI:</th>
+                                                    <td th:text="${pac.idpersona.dni}"></td>   
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Celular</th>
+                                                    <td th:text="${pac.idpersona.celular}"></td>   
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Dirección:</th>
+                                                    <td th:text="${pac.idpersona.direccion}"></td>   
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Género:</th>
+                                                    <td th:text="${#strings.equals(pac.idpersona.genero,'M')? 'Mujer' : 'Hombre'}"></td>   
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">F. Nacimiento:</th>
+                                                    <td th:text="${#dates.format(pac.idpersona.fechanac, 'dd/MM/yyyy')}"></td>   
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Alergias:</th>
+                                                    <td th:text="${#strings.isEmpty(pac.alergias)}? 'No presenta' : ${pac.alergias} "></td>   
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal -->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <footer th:replace="template :: footer">
+        </footer>
+        <script>
+            $('input[type="checkbox"]').on('change', function() {
+                $('input[type="checkbox"]').not(this).prop('checked', false);
+                if($(this).is(':checked')){
+                    $("#editarPaciente").css({
+                        "background-color":"var(--celeste-oscuro)",
+                        "color":"white"
+                    });
+                    $("#verPaciente").css({
+                        "background-color":"var(--celeste-oscuro)",
+                        "color":"white"
+                    });
+                    $("#nuevaCita").css({
+                        "background-color":"var(--celeste-oscuro)",
+                        "color":"white"
+                    });
+                } else {
+                    $("#editarPaciente").css({
+                        "background-color":"var(--celeste-claro)",
+                        "color":"var(--texto-desactivado)"
+                    });
+                    $("#verPaciente").css({
+                        "background-color":"var(--celeste-claro)",
+                        "color":"var(--texto-desactivado)"
+                    });
+                    $("#nuevaCita").css({
+                        "background-color":"var(--celeste-claro)",
+                        "color":"var(--texto-desactivado)"
+                    });
+                }
+            });
+            $("#verPaciente").click(function (){
+                $("input[type='checkbox']").each(function() {
+                    if($(this).prop("checked")){
+                        $(this).next()[0].click();
+                    }
+                });
+            });
+            $("#editarPaciente").click(function (){
+                $("input[type='checkbox']").each(function() {
+                    if($(this).prop("checked")){
+                        $(this).next().next()[0].click();
+                    }
+                });
+            });
+            $("#nuevaCita").click(function (){
+                $("input[type='checkbox']").each(function() {
+                    if($(this).prop("checked")){
+                        $(this).next().next().next()[0].click();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

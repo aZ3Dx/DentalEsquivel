@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="template :: head">
+    </head>
+    <body>
+        <header th:replace="template :: header">
+        </header>
+        <div class="main mx-4">
+            <div class="d-flex justify-content-between py-4 opciones">
+                <a th:href="@{/doctor}" class="btn text-white me-auto" style="background-color: var(--celeste-oscuro);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                    <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                    </svg>
+                </a>
+                <a class="btn fw-bold d-flex align-items-center justify-content-center w-25 me-2" style="background-color: var(--celeste-claro); color:var(--texto-desactivado); font-size: 1.2rem" id="editarPaciente"></a>
+            </div>
+            <table class="table table-bordered align-middle fs-5 text-center">
+                <tr class="table-light">
+                    <th>Hora</th>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miércoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                    <th>Sábado</th>
+                </tr>
+                <tr th:each="hora : ${#numbers.sequence(0,8)}">
+                    <td th:text="${#strings.substring(horas[hora],0,5)}"></td>
+                    <td th:each="dia : ${#numbers.sequence(0,5)}" class="dropdown-center"
+                        th:with="id = ${#strings.randomAlphanumeric(10)}">
+                        <a class="btn text-white fw-bold" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"
+                           th:if="${!#strings.equals(DoctoresTurnos[(hora*6) + dia],'-')}"
+                           style="background-color: var(--celeste-oscuro)"
+                           th:text="${DoctoresTurnos[(hora * 6) + dia]}">
+                        </a>
+                        <a  class="btn text-white" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"
+                            style="background-color: var(--texto-desactivado)"
+                            th:unless="${!#strings.equals(DoctoresTurnos[(hora*6) + dia],'-')}">
+                            <i class="bi bi-calendar-x"></i>
+                        </a>
+                        <ul sec:authorize="hasAnyRole('Admin','Secretaria')" class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink">
+                            <li><!-- Button trigger modal -->
+                                <button type="button" class="dropdown-item text-success btnAg">Añadir</button>
+                                <button hidden type="button" data-bs-toggle="modal" th:attr="data-bs-target='#MOD'+${id}" data-bs-target="#exampleModal">
+                                    Añadir
+                                </button></li>
+                            <li><a th:href="@{/doctor/quitar(id_dxt=${Ids[(hora*6) + dia]})}" class="dropdown-item text-danger">
+                                    Quitar
+                                </a></li>
+                        </ul>
+                        <!-- Modal -->
+                        <div class="modal" th:attr="id='MOD'+${id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <form action="/doctor/agregar" method="POST" style="width: 100%">
+                                <input type="hidden" th:value="${TurnosOrdenados[(hora*6) + dia].id_turno}" name="id_turno">
+                                <div class="modal-content p-4" style="border: .25rem solid var(--celeste-oscuro); border-radius: 20px;">
+                                    <div class="modal-title" id="exampleModalLabel">
+                                        <div class="rounded-pill text-white text-center py-3 mx-5 fw-bold" style="background-color: var(--celeste-oscuro); font-size: 1.2rem;">
+                                            ASIGNAR DOCTOR
+                                        </div>
+                                    </div>
+                                    <div class="modal-body pb-3">
+                                        <table class="table">
+                                            <tr>
+                                                <th scope="row">Día:</th>
+                                                <td th:switch="${dia}">
+                                                    <span th:case="0">Lunes</span>
+                                                    <span th:case="1">Martes</span>
+                                                    <span th:case="2">Miércoles</span>
+                                                    <span th:case="3">Jueves</span>
+                                                    <span th:case="4">Viernes</span>
+                                                    <span th:case="5">Sábado</span>
+                                                </td>   
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Hora:</th>
+                                                <td th:text="${#strings.substring(horas[hora],0,5)}"></td>   
+                                            </tr>
+                                        </table>
+                                        <div class="input-group form-floating">
+                                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-person-fill"></i></span>
+                                            <select class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiDoctor" placeholder="Doctor" name="id_doctor" aria-label="Doctor">
+                                                <option class="fst-italic" value="0">-</option>
+                                                <option th:each="doc : ${DoctoresDisponibles}" th:value="${doc.id_doctor}" th:text="${doc.idpersona.nombres} + ' ' + ${doc.idpersona.apellidos}">
+                                                </option>
+                                            </select>
+                                            <label for="fiDoctor" style="z-index: 3; padding-left: .5rem; left: 3rem; transition: 0.4s; font-size: 1rem;">Doctor</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn text-white" style="background-color: var(--gris)" data-bs-dismiss="modal">Cerrar</button>
+                                        <input type="submit" class="btn text-white" style="background-color: var(--morado)" value="Confirmar">
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Modal -->
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- Button trigger modal -->
+        <button hidden id="btnError" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalError">
+            Launch demo modal
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="modalError" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-4" style="border: .25rem solid var(--celeste-oscuro); border-radius: 20px;">
+                    <div class="modal-title" id="exampleModalLabel">
+                        <div class="rounded-pill text-white text-center py-3 mx-5 fw-bold" style="background-color: var(--celeste-oscuro); font-size: 1.2rem;">
+                            ASIGNAR DOCTOR
+                        </div>
+                    </div>
+                    <div class="modal-body pb-3 text-center">
+                        Turno ya asignado!
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="template :: footer">
+        </footer>
+        <script>
+            $(".btnAg").click(function (){
+                if(!$(this).parent().parent().prev().hasClass("fw-bold")){
+                    $(this).next().click();
+                } else {
+                    $("#btnError").click();
+                }
+            });
+        </script>
+    </body>
+</html>

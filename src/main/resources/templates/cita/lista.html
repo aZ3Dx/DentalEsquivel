@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="template :: head">
+    </head>
+    <body>
+        <header th:replace="template :: header">
+        </header>
+        <div class="main mx-4">
+            <div class="d-flex align-items-center justify-content-between py-4 opciones">
+                <a class="btn text-white me-auto" style="background-color: var(--celeste-oscuro);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                    <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                    </svg>
+                </a>
+                <a id="btnFiltrar" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"
+                   class="disa btn fw-bold d-flex align-items-center justify-content-center w-25 me-3" style="background-color: var(--celeste-oscuro); color: white; font-size: 1.2rem">Filtrar</a>
+                <div class="collapse" id="collapseExample">
+                    <a th:href="@{/cita/estado(est=${'Nueva'})}" class="btn text-white fw-bold" style="background-color: var(--morado); font-size: 1.2rem; border-radius: 20px 5px 5px 20px">Nueva</a>
+                    <a th:href="@{/cita/estado(est=${'Sin Confirmar'})}" class="btn text-white fw-bold" style="background-color: #ee733d; font-size: 1.2rem; border-radius: 5px">Sin Confirmar</a>
+                    <a th:href="@{/cita/estado(est=${'Confirmada'})}" class="btn text-white fw-bold" style="background-color: #009e47; font-size: 1.2rem; border-radius: 5px">Confirmada</a>
+                    <a th:href="@{/cita/estado(est=${'Atendida'})}" class="btn text-white fw-bold" style="background-color: var(--celeste-oscuro); font-size: 1.2rem; border-radius: 5px">Atendida</a>
+                    <a th:href="@{/cita/estado(est=${'all'})}" class="btn text-white fw-bold me-2" style="background-color: var(--celeste-oscuro); font-size: 1.2rem; border-radius: 5px 20px 20px 5px">Todas</a>
+                </div>
+                
+            </div>
+            <div class="row justify-content-center">
+                <div th:each="cita,index : ${Citas}" class="col-md-6 fs-5" th:classappend="${index.index == #lists.size(Citas) - 1}? 'me-auto' : ''">
+                    <div>
+                        <span class="m-0 px-3 py-1 fw-bold bg-white" style="border: 2px solid var(--celeste-oscuro); border-radius: 10px 10px 0px 0px; border-bottom: none">
+                            ID :
+                            <span th:text="${cita.id_cita}"></span>
+                        </span>
+                    </div>
+                    <div class="mb-3 p-3 bg-white"
+                     style="border: 2px solid var(--celeste-oscuro); border-radius: 0px 10px 28px 28px;">
+                        <div class="position-relative row">
+                            <div class="col">
+                                <div class="fw-bold">Paciente:</div>
+                                <div th:text="${cita.idpaciente.idpersona.nombres + ' ' + cita.idpaciente.idpersona.apellidos}"></div>
+                            </div>
+                            <div class="col">
+                                <div class="fw-bold">Motivo:</div>
+                                <div th:text="${cita.comentario}"></div>
+                                <span th:switch="${cita.idestado.id_estado}">
+                                    <a class="btn estadoCita position-absolute w-25 text-center text-decoration-none text-white"
+                                       data-bs-toggle="dropdown" aria-expanded="false"
+                                       th:case="1" style="background-color: var(--morado)" th:text="${cita.idestado.estado}"></a>
+                                    <a class="btn estadoCita position-absolute w-25 text-center text-decoration-none text-white"
+                                       data-bs-toggle="dropdown" aria-expanded="false"
+                                       th:case="2" style="background-color: #ee733d" th:text="${cita.idestado.estado}"></a>
+                                    <a class="btn estadoCita position-absolute w-25 text-center text-decoration-none text-white"
+                                       data-bs-toggle="dropdown" aria-expanded="false"
+                                       th:case="3" style="background-color: #009e47" th:text="${cita.idestado.estado}"></a>
+                                    <a class="btn estadoCita position-absolute w-25 text-center text-decoration-none text-white"
+                                       data-bs-toggle="dropdown" aria-expanded="false"
+                                       th:case="4" style="background-color: #d92735" th:text="${cita.idestado.estado}"></a>
+                                    <a class="btn estadoCita position-absolute w-25 text-center text-decoration-none text-white"
+                                       data-bs-toggle="dropdown" aria-expanded="false"
+                                       th:case="5" style="background-color: #b31f36" th:text="${cita.idestado.estado}"></a>
+                                    <a class="btn estadoCita position-absolute w-25 text-center text-decoration-none text-white"
+                                       data-bs-toggle="dropdown" aria-expanded="false"
+                                       th:case="6" style="background-color: var(--celeste-oscuro)" th:text="${cita.idestado.estado}"></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a data-bs-toggle="modal" th:attr="data-bs-target='#CITA'+${cita.id_cita}"
+                                               type="button" class="dropdown-item">
+                                                Cambiar estado</a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a th:href="@{/cita/ver(id=${cita.id_cita})}" class="dropdown-item">Ver cita</a></li>
+                                    </ul>
+                                </span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <div class="fw-bold">Doctor:</div>
+                                <div th:text="${cita.iddoctor.idpersona.nombres + ' ' + cita.iddoctor.idpersona.apellidos}"></div>
+                            </div>
+                            <div class="col">
+                                <table>
+                                    <tr>
+                                        <th class="pe-2">Fecha:</th>
+                                        <td th:text="${#dates.format(cita.fecha, 'dd/MM/yyyy')}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Hora:</th>
+                                        <td th:text="${#dates.format(cita.hora, 'HH:mm')}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal" th:attr="id='CITA'+${cita.id_cita}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <form action="/cita/cambiarEstado" method="POST" style="width: 100%">
+                                <input type="hidden" th:value="${cita.id_cita}" name="id_cita">
+                                <div class="modal-content p-4" style="border: .25rem solid var(--celeste-oscuro); border-radius: 20px;">
+                                    <div class="modal-title" id="exampleModalLabel">
+                                        <div class="rounded-pill text-white text-center py-3 mx-5 fw-bold" style="background-color: var(--celeste-oscuro); font-size: 1.2rem;">
+                                            Cambiar estado
+                                        </div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3 text-center">
+                                            <span>Estado actual: </span>
+                                            <span class="fw-bold" th:text="${cita.idestado.estado}"></span>
+                                        </div>
+                                        <div class="input-group form-floating">
+                                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-person-fill"></i></span>
+                                            <select class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiEstado" placeholder="Estado" name="id_estado" aria-label="Estado">
+                                                <option th:each="est : ${Estados}" th:value="${est.id_estado}" th:text="${est.estado}"
+                                                        th:attr="selected = ${#strings.equals(cita.idestado.estado,est.estado)? 'true' : 'false'}">
+                                                </option>
+                                            </select>
+                                            <label for="fiEstado" style="z-index: 3; padding-left: .5rem; left: 3rem; transition: 0.4s; font-size: 1rem;">Estado</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn text-white" style="background-color: var(--gris)" data-bs-dismiss="modal">Cerrar</button>
+                                        <input type="submit" class="btn text-white" style="background-color: var(--morado)" value="Confirmar">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>  
+                    </div>
+                    <!-- Modal -->
+                </div>
+            </div>
+        </div>
+        <footer th:replace="template :: footer">
+        </footer>
+        <script>
+            $("#btnFiltrar").click(function(){
+                if ($("#btnFiltrar").hasClass("disa")){
+                    $("#btnFiltrar").css({
+                        "background-color":"var(--celeste-claro)",
+                        "color":"var(--texto-desactivado)"
+                    });
+                    $("#btnFiltrar").removeClass("disa");
+                } else {
+                    $("#btnFiltrar").css({
+                        "background-color":"var(--celeste-oscuro)",
+                        "color":"white"
+                    });
+                    $("#btnFiltrar").addClass("disa");
+                }
+            });
+        </script>
+    </body>
+</html>

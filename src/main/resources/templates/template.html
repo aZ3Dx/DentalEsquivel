@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head th:fragment="head">
+        <title th:text="${title}"></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Fuente -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <!-- FECHAS  -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+        <!-- Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+        <!-- JQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="http://localhost:8080/css/template.css">
+        <!-- DataTable -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>
+        <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+        <style>
+            body {
+                font-family: 'Lato', sans-serif !important;
+                background: url(http://localhost:8080/images/Fondo.png) no-repeat center center fixed;
+                background-size: cover;
+            }
+            .sidebar {
+                width: 300px;
+            }
+        </style>
+    </head>
+    <body>
+        <header th:fragment="header"  class="sticky-top">
+            <nav class="navbar navbar-expand-md" style="background-color: #F0F0F0; z-index: 10">
+                <div class="container-fluid">
+                    <div>
+                        <img class="imageLogo me-2" src="http://localhost:8080/images/Logo.png" width="260">
+                    </div>
+                    <div th:text="${titulo}" class="fw-bold fs-1"></div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
+                            aria-controls="sidebarMenu" aria-expanded="false" aria-label="sidebarMenu" style="color:#8D69F8; border-color: #8D69F8">
+                        <span><i class="bi bi-list"></i></span>
+                    </button>
+                    <div class="dropdown">
+                        <a class="me-4 d-flex align-items-center text-decoration-none" role="button" data-bs-toggle="dropdown" data-bs-target="dropdownUser"
+                                aria-expanded="false">
+                            <span id="usernameSec" sec:authentication="name" class="fs-4 pe-2" style="color:#8D69F8;"></span>
+                            <i class="bi bi-person-circle fs-1" style="color:#8D69F8;"></i>
+                        </a>
+                        <ul id="dropdownUser" class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                            <li>
+                                <form action="/cambiar" method="POST">
+                                    <input type="hidden" id="userHidden" value="" name="userHidden">
+                                    <button type="submit" class="dropdown-item">Cambiar Contraseña</button>
+                                </form>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <nav id="sidebarMenu" class="collapse d-md-block sideba">
+                <div class="">
+                    <div class="list-group list-group-flush mx-3">
+                        <a th:href="@{/home}" class="list-group-item list-group-item-action mb-4"
+                           th:classappend="${vista == 1} ? 'activo' : ''">Inicio</a>
+                        <a sec:authorize="hasAnyRole('Admin','Gerente','Recepcionista')" th:href="@{/paciente}" class="list-group-item list-group-item-action mb-4"
+                           th:classappend="${vista == 2} ? 'activo' : ''">Paciente</a>
+                        <a sec:authorize="hasAnyRole('Admin','Gerente','Recepcionista')" th:href="@{/cita}" class="list-group-item list-group-item-action mb-4"
+                           th:classappend="${vista == 3} ? 'activo' : ''">Cita</a>
+                        <a sec:authorize="hasAnyRole('Admin','Gerente','Secretaria')" th:href="@{/trabajador}" class="list-group-item list-group-item-action mb-4"
+                           th:classappend="${vista == 4} ? 'activo' : ''">Trabajador</a>
+                        <a sec:authorize="hasAnyRole('Admin','Gerente','Secretaria','Doctor')" th:href="@{/doctor}" class="list-group-item list-group-item-action mb-4"
+                           th:classappend="${vista == 5} ? 'activo' : ''">Doctor</a>
+                    </div>
+                </div>
+            </nav>
+            <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+                class="alert alert-dismissible fade show" role="alert">
+                <i th:classappend="'bi-' + (${ico != null} ? ${ico} : 'apple')" class="bi ps-4"></i>
+                <span th:text="${mensaje}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </header>
+        <div class="main">
+            <div class="">
+                Contenido
+            </div>
+        </div>
+        <footer th:fragment="footer">
+            <script>
+                $("#userHidden").val($("#usernameSec").text());
+                $(document).ready( function () {
+                    $('#table_id').DataTable({
+                        lengthMenu: [
+                            [10, 15, -1],
+                            [10, 15, 'All']
+                        ],
+                        language: {
+                            lengthMenu: 'Mostrando _MENU_ registros por página',
+                            zeroRecords: 'Nada encontrado...',
+                            info: 'Página _PAGE_ de _PAGES_',
+                            infoEmpty: 'Sin registros coincidentes',
+                            infoFiltered: '(Filtrados de _MAX_ registros totales)',
+                            search: "Filtrar:  ",
+                            previous: "Anterior",
+                            paginate: {
+                                first: "Primero",
+                                previous: "Anterior",
+                                next: "Siguiente",
+                                last: "Último"
+                            }
+                        },
+                        bLengthChange: false
+                    });
+                });
+            </script>
+        </footer>
+    </body>
+</html>

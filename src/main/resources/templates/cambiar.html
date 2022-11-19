@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dental Esquivel - Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Fuente -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+        <!-- Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+        <style>
+            body {
+                font-family: 'Lato', sans-serif;
+                background: url('images/FondoDark.png') no-repeat center center fixed;
+                background-size: cover;
+            }
+            .input-group-text {
+                background-color: #8D69F8;
+                color: white;
+                border-style: none;
+            }
+            i {
+                font-size: 1.3rem;
+            }
+            .btn {
+                border-style: none;
+                font-weight: 700;
+                font-size: 1.2rem;
+                border-radius: 15px;
+            }
+            input.form-control:focus {
+                box-shadow: none;
+                border-color: #8C49D1;
+            }
+            .form-control::-webkit-input-placeholder, label {
+                font-weight: 300;
+                font-size: 1.2rem;
+            }
+            .form-control {
+                font-weight: 400;
+                font-size: 1.2rem;
+            }
+
+            .btnIniciar, .btnCambiar {
+                transition: 0.3s;
+            }
+            .btnIniciar:hover {
+                background-color: #8C49D1 !important;
+                box-shadow: 3px 3px 5px 1px black;
+            }
+            .btnCambiar:hover {
+                background-color: #313A37 !important;
+                box-shadow: 3px 3px 5px 1px black;
+            }
+        </style>
+    </head>
+    <body id="fondo" class="vh-100">
+        <div class="vh-100 d-flex align-items-center justify-content-center">
+            <div class="d-flex">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div>
+                        <img src="images/Logo_Blanco.png">
+                    </div>
+                </div>
+                <div style="width: 8rem;">
+                    &nbsp;
+                </div>
+                <div class="px-5 py-4 rounded-4" style="background-color: #5AB7BC; width: 440px;">
+                    <form class="p-3" action="/actualizarContra" method="post" th:object="${Usuario}">
+                        <div class="text-white text-center mb-3" style="font-weight: 900; font-size: 3.3rem;">Cambiar Contraseña</div>
+
+                        <input th:field="*{id_usuario}" type="hidden">
+                        
+                        <div class="input-group form-floating mb-4">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-person-fill"></i></span>
+                            <input readonly="true" th:field="*{username}" type="text" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiUser" placeholder="Usuario" name="username">
+                            <label for="fiUser" style="z-index: 3; padding-left: .5rem; left: 3rem; transition: 0.4s; font-size: 1rem;">Usuario</label>
+                        </div>
+                        
+                        <input th:field="*{password}" type="hidden">
+                        <input th:field="*{activo}" type="hidden">
+
+                        <div class="input-group form-floating mb-4">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-lock-fill"></i></span>
+                            <input type="password" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiOldPass" placeholder="Contraseña actual" name="oldPassword">
+                            <label for="fiOldPass" style="z-index: 3; padding-left: .5rem; left: 3rem; transition: 0.4s; font-size: 1rem;">Contraseña actual</label>
+                        </div>
+                        
+                        <div class="input-group form-floating mb-4">
+                            <span class="input-group-text" style="border-radius: 15px 0px 0px 15px;"><i class="bi bi-lock-fill"></i></span>
+                            <input type="password" class="form-control" style="border-radius: 0px 15px 15px 0px;" id="fiNewPass" placeholder="Nueva Contraseña" name="newPassword">
+                            <label for="fiNewPass" style="z-index: 3; padding-left: .5rem; left: 3rem; transition: 0.4s; font-size: 1rem;">Nueva Contraseña</label>
+                        </div>
+                        
+                        <input th:field="*{idrol}" type="hidden">
+
+                        <button class="btn text-white w-100 mb-3 btnIniciar" style="background-color: #8D69F8">Confirmar</button><!--
+                        <div>
+                            <a class="btn btn-primary w-100 btnCambiar" th:href="@{/cambiarContraseña}" style="background-color: #373737">Cambiar contraseña</a>
+                        </div>-->
+                        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show my-4" role="alert">
+                            <i class="bi bi-x-square-fill"></i>
+                            <strong>ERROR </strong>Contraseña actual o nueva contraseña incorrectos
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
