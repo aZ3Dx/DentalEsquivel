@@ -29,7 +29,7 @@ public class Controlador {
         if(error!=null){
             model.addAttribute("error",true);
         }
-        return "/login";
+        return "login";
     }
     //Mapeo de página principal y posterior redireccionamiento a Home
     @GetMapping("")
@@ -46,7 +46,7 @@ public class Controlador {
         model.addAttribute("vista", 1);
         model.addAttribute("title", "Inicio");
         model.addAttribute("titulo", "BIENVENIDO");
-        return "/home";
+        return "home";
     }
     
     @PostMapping("/cambiar")
@@ -59,7 +59,7 @@ public class Controlador {
             }
         }
         
-        return "/cambiar";
+        return "cambiar";
     }
     
     @PostMapping("/actualizarContra")
