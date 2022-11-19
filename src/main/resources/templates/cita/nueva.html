@@ -78,7 +78,7 @@
         </div>
         <footer th:replace="template :: footer">
         </footer>
-        <script src="http://localhost:8080/js/datejs.js"></script>
+        <script src="/js/datejs.js"></script>
         <script>
             $("input[name*='fecha']").flatpickr({
                 disable: [function(date) {return (date.getDay() === 0 );}],
@@ -95,9 +95,9 @@
         </script>
         <script th:inline="javascript">
             /* Variable Javascript que guarda el contextPath para formar la URL a la cual haremos la peticion*/
-            var contextPath = /*[[@{http://localhost:8080/cita/nueva/obtenerHoras}]]*/
+            var contextPath = /*[[@{/cita/nueva/obtenerHoras}]]*/
             console.log(contextPath);
-            var contextPath2 = /*[[@{http://localhost:8080/cita/nueva/obtenerDoctor}]]*/
+            var contextPath2 = /*[[@{/cita/nueva/obtenerDoctor}]]*/
             console.log(contextPath2);
 
             $('#idFecha').change(function() {
