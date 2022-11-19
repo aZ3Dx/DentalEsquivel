@@ -46,7 +46,7 @@ public class Controlador {
         model.addAttribute("vista", 1);
         model.addAttribute("title", "Inicio");
         model.addAttribute("titulo", "BIENVENIDO");
-        return "/homeeeee";
+        return "/home.html";
     }
     
     @PostMapping("/cambiar")
