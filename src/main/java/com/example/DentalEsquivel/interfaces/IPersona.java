@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IPersona extends CrudRepository<Persona, Integer> {
 
-    @Query(value = "SELECT * FROM personas P LEFT JOIN usuarios U ON U.id_usuario = P.idusuario LEFT JOIN roles R ON R.id_rol = u.idrol WHERE r.rol != 'ROLE_Paciente' or r.rol is null",
+    @Query(value = "SELECT * FROM personas P LEFT JOIN usuarios U ON U.id_usuario = P.idusuario LEFT JOIN roles R ON R.id_rol = U.idrol WHERE R.rol != 'ROLE_Paciente' or R.rol is null",
             nativeQuery = true)
     List<Persona> ListOnlyWorkers();
 }

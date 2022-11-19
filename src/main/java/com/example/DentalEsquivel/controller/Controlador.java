@@ -32,7 +32,7 @@ public class Controlador {
         return "/login";
     }
     //Mapeo de página principal y posterior redireccionamiento a Home
-    @GetMapping("/")
+    @GetMapping("")
     public String bienvenida(Model model, RedirectAttributes redirectAttrs){
         redirectAttrs
                 .addFlashAttribute("mensaje", "Acceso Exitoso")
