@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/paciente")
+@RequestMapping("paciente")
 public class ControladorPaciente {
     
     @Autowired

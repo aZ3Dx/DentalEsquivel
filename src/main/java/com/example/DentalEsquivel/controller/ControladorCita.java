@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/cita")
+@RequestMapping("cita")
 public class ControladorCita {
     
     @Autowired
