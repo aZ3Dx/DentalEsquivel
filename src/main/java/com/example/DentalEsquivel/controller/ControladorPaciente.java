@@ -56,7 +56,7 @@ public class ControladorPaciente {
         //Se envía lista de pacientes
         List<Paciente> pacientes = iPaciente.Listar();
         model.addAttribute("Pacientes", pacientes);
-        return "/paciente/lista";
+        return "paciente/lista";
     }
     
     //Mapeo de nuevo trabajador - Formulario nuevo trabajador
@@ -74,7 +74,7 @@ public class ControladorPaciente {
         //Variable para recibir la clave
         String claveBox = "";
         model.addAttribute("claveBox", claveBox);
-        return "/paciente/nuevo";
+        return "paciente/nuevo";
     }
     
     @PostMapping("/nuevo/guardar")
@@ -96,7 +96,7 @@ public class ControladorPaciente {
             //Se reenvía la instancia Persona
             model.addAttribute("Persona", persona);
             model.addAttribute("claveBox", claveBox);
-            return "/paciente/nuevo";
+            return "paciente/nuevo";
         }
         //BLOQUE DE CREACIÓN AUTOMÁTICA DE USUARIO -------->
         Usuario usuario = new Usuario();
@@ -139,7 +139,7 @@ public class ControladorPaciente {
         List<Ciudad> ciudades = iCiudad.Listar();
         model.addAttribute("Ciudades", ciudades);
 
-        return "/paciente/editar";
+        return "paciente/editar";
     }
     
     @PostMapping("/actualizar")
@@ -161,7 +161,7 @@ public class ControladorPaciente {
             model.addAttribute("Paciente", paciente);
             //Se reenvía la instancia Persona
             model.addAttribute("Persona", persona);
-            return "/paciente/editar";
+            return "paciente/editar";
         }
 
         iPersona.Guardar(persona);

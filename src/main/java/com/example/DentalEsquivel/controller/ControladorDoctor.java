@@ -96,7 +96,7 @@ public class ControladorDoctor {
         //Se envía Lista Doctores Disponibles (¡filtrar activos!)
         model.addAttribute("DoctoresDisponibles", doctoresDisponibles);
         
-        return "/doctor/turnos";
+        return "doctor/turnos";
     }
     
     @GetMapping("/quitar")

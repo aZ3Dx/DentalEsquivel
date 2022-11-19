@@ -53,7 +53,7 @@ public class ControladorCita {
         List<Estado> estados = iEstado.Listar();
         model.addAttribute("Estados",  estados);
         
-        return "/cita/lista";
+        return "cita/lista";
     }
     
     @GetMapping("/estado")
@@ -69,7 +69,7 @@ public class ControladorCita {
         List<Estado> estados = iEstado.Listar();
         model.addAttribute("Estados",  estados);
 
-        return "/cita/estado";
+        return "cita/estado";
     }
 
     @GetMapping("/nueva")
@@ -82,7 +82,7 @@ public class ControladorCita {
         model.addAttribute("Cita", cita);
         model.addAttribute("letraDia", 'G');
         
-        return "/cita/nueva";
+        return "cita/nueva";
     }
     
     @PostMapping("/nueva/guardar")
@@ -101,7 +101,7 @@ public class ControladorCita {
             model.addAttribute("Horas", horasDisponibles);
             model.addAttribute("letraDia", letraDia);
             
-            return "/cita/nueva";
+            return "cita/nueva";
         }
         Estado estado = iEstado.ListarId(1); //Nuevo
         cita.setIdestado(estado);
@@ -116,7 +116,7 @@ public class ControladorCita {
         Cita cita = iCita.ListarId(id_cita);
         model.addAttribute("Cita", cita);
         
-        return "/cita/ver";
+        return "cita/ver";
     }
     
     @GetMapping("/nueva/obtenerHoras")

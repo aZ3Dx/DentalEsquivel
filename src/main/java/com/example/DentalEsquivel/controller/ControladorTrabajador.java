@@ -66,7 +66,7 @@ public class ControladorTrabajador {
         //Se envía lista de Trabajadores
         List<Persona> personas = iPersona.ListarSoloTrabajadores();
         model.addAttribute("Personas", personas);
-        return "/trabajador/lista";
+        return "trabajador/lista";
     }
 
     //Mapeo de nuevo trabajador - Formulario nuevo trabajador
@@ -79,7 +79,7 @@ public class ControladorTrabajador {
         List<Ciudad> ciudades = iCiudad.Listar();
         model.addAttribute("Ciudades", ciudades);
 
-        return "/trabajador/nuevo";
+        return "trabajador/nuevo";
     }
 
     //Mapeo guardar trabajador - Se valida formulario nuevo trabajador
@@ -98,7 +98,7 @@ public class ControladorTrabajador {
             model.addAttribute("Ciudades", ciudades);
 
             model.addAttribute("Persona", persona);
-            return "/trabajador/nuevo";
+            return "trabajador/nuevo";
         }
         
         iPersona.Guardar(persona);
@@ -122,7 +122,7 @@ public class ControladorTrabajador {
         List<Rol> roles = iRol.Listar();
         model.addAttribute("Roles", roles);
 
-        return "/trabajador/editar";
+        return "trabajador/editar";
     }
 
     //Mapeo actualizar trabajador - Validación de form actualizar trabajador
@@ -142,7 +142,7 @@ public class ControladorTrabajador {
 
             List<Rol> roles = iRol.Listar();
             model.addAttribute("Roles", roles);
-            return "/trabajador/editar";
+            return "trabajador/editar";
         }
         if (Objects.nonNull(persona.getIdusuario())) {
             if (persona.getIdusuario().getIdrol().getRol().equals("ROLE_Doctor")) {
@@ -196,7 +196,7 @@ public class ControladorTrabajador {
         model.addAttribute("Roles", roles);
         //Se envía indicador de contraseñas coincidentes
         model.addAttribute("coinciden", true);
-        return "/trabajador/asignar";
+        return "trabajador/asignar";
     }
 
     //Mapeo usuario asignado trabajador - Validación de asignación
@@ -233,7 +233,7 @@ public class ControladorTrabajador {
             } else {
                 model.addAttribute("coinciden", false);
             }
-            return "/trabajador/asignar";
+            return "trabajador/asignar";
         }
         //Se codifica la contraseña y se guarda el Usuario en la BD
         usuario.setPassword(passEncoder.encode(usuario.getPassword()));
