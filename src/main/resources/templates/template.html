@@ -35,19 +35,19 @@
         </style>
     </head>
     <body>
-        <header th:fragment="header"  class="sticky-top">
+        <header th:fragment="header" class="sticky-top">
             <nav class="navbar navbar-expand-md" style="background-color: #F0F0F0; z-index: 10">
                 <div class="container-fluid">
                     <div>
                         <img class="imageLogo me-2" src="/images/Logo.png" width="260">
                     </div>
-                    <div th:text="${titulo}" class="fw-bold fs-1"></div>
+                    <div id="tituloVista" th:text="${titulo}" class="fw-bold fs-1"></div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
                             aria-controls="sidebarMenu" aria-expanded="false" aria-label="sidebarMenu" style="color:#8D69F8; border-color: #8D69F8">
                         <span><i class="bi bi-list"></i></span>
                     </button>
                     <div class="dropdown">
-                        <a class="me-4 d-flex align-items-center text-decoration-none" role="button" data-bs-toggle="dropdown" data-bs-target="dropdownUser"
+                        <a class="d-flex align-items-center text-decoration-none" role="button" data-bs-toggle="dropdown" data-bs-target="dropdownUser"
                                 aria-expanded="false">
                             <span id="usernameSec" sec:authentication="name" class="fs-4 pe-2" style="color:#8D69F8;"></span>
                             <i class="bi bi-person-circle fs-1" style="color:#8D69F8;"></i>
@@ -95,6 +95,30 @@
         </div>
         <footer th:fragment="footer">
             <script>
+                $.fn.padingSidebar = function () {
+                    if ($('.navbar').height() >= 70) {
+                        $('#sidebarMenu').addClass('sideba_padding');
+                    } else {
+                        $('#sidebarMenu').removeClass('sideba_padding');
+                    }
+                };
+
+                $(document).ready(function () {
+                    $.fn.padingSidebar();
+                });
+
+                $(window).resize(function () {
+                    $.fn.padingSidebar();
+                });
+
+                // Acortar tituloVista si es muy largo
+                $(document).ready(function () {
+                    var tituloVista = $('#tituloVista').text();
+                    if (tituloVista.length > 5) {
+                        $('#tituloVista').text(tituloVista.substring(0, 4) + '...');
+                    }
+                });
+
                 $("#userHidden").val($("#usernameSec").text());
                 $(document).ready( function () {
                     $('#table_id').DataTable({

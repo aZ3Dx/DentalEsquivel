@@ -62,16 +62,16 @@
     </head>
     <body id="fondo" class="vh-100">
         <div class="vh-100 d-flex align-items-center justify-content-center">
-            <div class="d-flex">
+            <div class="d-flex flex-column align-items-center flex-xl-row">
                 <div class="d-flex align-items-center justify-content-center">
                     <div>
-                        <img src="images/Logo_Blanco.png">
+                        <img class="img-fluid" src="images/Logo_Blanco.png">
                     </div>
                 </div>
                 <div style="width: 8rem;">
                     &nbsp;
                 </div>
-                <div class="px-5 py-4 rounded-4" style="background-color: #5AB7BC; width: 440px;">
+                <div class="rounded-4 px-3 py-1 px-lg-5 py-lg-4" style="background-color: #5AB7BC; max-width: 440px;">
                     <form class="p-3" th:action="@{/login}" method="post">
                         <div class="text-white text-center mb-3" style="font-weight: 900; font-size: 3.3rem;">LOGIN</div>
 

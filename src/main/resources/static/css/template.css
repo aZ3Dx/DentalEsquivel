@@ -79,6 +79,9 @@ input::-webkit-inner-spin-button {
     width: 272px;
     z-index: 5;
 }
+.sideba_padding {
+    padding-top: 130px !important;
+}
 
 .activo {
     color: #FFFFFF;
@@ -125,7 +128,7 @@ input::-webkit-inner-spin-button {
         width: 100%;
     }
     .imageLogo {
-        width: 100px;
+        width: 80px;
     }
     
 }
