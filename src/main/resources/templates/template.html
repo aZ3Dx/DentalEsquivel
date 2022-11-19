@@ -96,9 +96,12 @@
         <footer th:fragment="footer">
             <script>
                 $.fn.padingSidebar = function () {
-                    if ($('.navbar').height() >= 70) {
+                    // Si navbar-toggler está visible y el height de navbar es mayor a 70
+                    if ($('.navbar-toggler').is(':visible') && $('.navbar').height() > 70) {
+                        // Añadir padding-top al body
                         $('#sidebarMenu').addClass('sideba_padding');
                     } else {
+                        // Eliminar padding-top del body
                         $('#sidebarMenu').removeClass('sideba_padding');
                     }
                 };
@@ -111,11 +114,13 @@
                     $.fn.padingSidebar();
                 });
 
-                // Acortar tituloVista si es muy largo
                 $(document).ready(function () {
-                    var tituloVista = $('#tituloVista').text();
-                    if (tituloVista.length > 5) {
-                        $('#tituloVista').text(tituloVista.substring(0, 4) + '...');
+                    // Si la pantalla es menor a 420px
+                    if ($(window).width() < 480) {
+                        var tituloVista = $('#tituloVista').text();
+                        if (tituloVista.length > 5) {
+                            $('#tituloVista').text(tituloVista.substring(0, 4) + '...');
+                        }
                     }
                 });
 
